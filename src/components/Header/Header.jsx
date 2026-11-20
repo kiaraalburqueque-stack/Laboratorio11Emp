@@ -6,8 +6,8 @@ const NAV_LINKS = [
   { label: 'Contacto', href: '#contact' },
 ]
 
-// Top bar with the cinema name and the main navigation.
-function Header({ cinemaName }) {
+// Top bar with the cinema name, the main navigation and the favorites counter.
+function Header({ cinemaName, favoritesCount }) {
   return (
     <header className="header">
       <div className="header__inner container">
@@ -26,6 +26,9 @@ function Header({ cinemaName }) {
             ))}
           </ul>
         </nav>
+        <span className="header__favorites" aria-live="polite">
+          ♥ {favoritesCount} {favoritesCount === 1 ? 'favorita' : 'favoritas'}
+        </span>
       </div>
     </header>
   )
