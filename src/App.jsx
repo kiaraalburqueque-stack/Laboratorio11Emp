@@ -13,7 +13,8 @@ function App() {
   // and every MovieCard (heart button) need the same list.
   const [favorites, setFavorites] = useState([])
 
-  // Search text reported by MovieSearch. MovieList will use it to filter.
+  // Search text reported by MovieSearch (already debounced). It lives in App
+  // because MovieSearch writes it and MovieList, a sibling, reads it.
   const [query, setQuery] = useState('')
 
   // Adds the movie if it is not in the list, removes it if it is.
@@ -33,11 +34,11 @@ function App() {
         <Hero movie={featuredMovie} />
         <div className="container mt-4">
           <MovieSearch onSearch={setQuery} />
-          <p className="text-muted text-small mt-4">Texto en App: «{query}»</p>
         </div>
         <MovieList
           title="En cartelera"
           movies={movies}
+          query={query}
           favorites={favorites}
           onToggleFavorite={toggleFavorite}
         />
