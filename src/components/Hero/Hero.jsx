@@ -2,7 +2,9 @@ import Button from '../Button/Button'
 import './Hero.css'
 
 // Banner for the featured movie. It only knows the movie it receives by props.
-function Hero({ movie }) {
+// Whatever App places between <Hero> and </Hero> (the search box) arrives as
+// children and is drawn under the calls to action.
+function Hero({ movie, children }) {
   return (
     <section className="hero" id="featured">
       <div
@@ -19,7 +21,15 @@ function Hero({ movie }) {
             {movie.genre} · {movie.duration} min · {movie.rating} · ⭐ {movie.score}
           </p>
           <p className="hero__synopsis">{movie.synopsis}</p>
-          <Button href="#billboard">Ver horarios</Button>
+
+          <div className="hero__actions row">
+            <Button href="#billboard">Ver horarios</Button>
+            <Button href="#contact" variant="secondary">
+              Reservar por teléfono
+            </Button>
+          </div>
+
+          {children && <div className="hero__search">{children}</div>}
         </div>
       </div>
     </section>

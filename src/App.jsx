@@ -31,10 +31,9 @@ function App() {
     <>
       <Header cinemaName={cinema.name} favoritesCount={favorites.length} />
       <main>
-        <Hero movie={featuredMovie} />
-        <div className="container mt-4">
+        <Hero movie={featuredMovie}>
           <MovieSearch onSearch={setQuery} />
-        </div>
+        </Hero>
         <MovieList
           title="En cartelera"
           movies={movies}

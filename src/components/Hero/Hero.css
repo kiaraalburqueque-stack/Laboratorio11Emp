@@ -65,3 +65,31 @@
     width: 160px;
   }
 }
+
+.hero__actions {
+  margin-bottom: var(--space-5);
+}
+
+.hero__search {
+  padding: var(--space-4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-lg);
+  background: rgba(15, 17, 23, 0.55);
+  backdrop-filter: blur(6px);
+  max-width: 520px;
+}
+
+.hero__search label {
+  color: var(--color-text);
+}
+
+@media (max-width: 700px) {
+  .hero__actions {
+    justify-content: center;
+  }
+
+  .hero__search {
+    margin-inline: auto;
+    text-align: left;
+  }
+}
