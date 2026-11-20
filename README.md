@@ -1,15 +1,10 @@
-# Laboratorio 09 – ReactJS: Cartelera de cine
+# Laboratorio 10 – Componentes y eventos: Cartelera de cine
 
 **Curso:** Desarrollo de Aplicaciones Empresariales (4-C24-A)
 **Docente:** Michael Montgomery Rosell
 **Alumna:** Kiara Alburqueque
 
-Aplicación en React + Vite que muestra la cartelera de un cine ("Cine Tecsup") armada con componentes funcionales que reciben sus datos por *props*.
-
-## Requisitos
-
-- Node.js 20.19 o superior (`node -v`)
-- npm
+Continuación de la cartelera del laboratorio 9 (React + Vite). En esta semana se agregan un botón reutilizable, películas favoritas con `useState`, un buscador controlado con retardo, el filtrado de la cartelera con estado vacío y el guardado de las favoritas en el navegador.
 
 ## Cómo levantar el proyecto
 
@@ -18,63 +13,40 @@ npm install
 npm run dev
 ```
 
-Abrir la URL que muestra la consola (por defecto http://localhost:5173).
+## Estructura
 
-## Dependencias declaradas
+```
+src/
+├── App.jsx                 # estado compartido: favoritas y texto de búsqueda
+├── components/
+│   ├── Button/             # botón reutilizable (children + variant + size)
+│   ├── Header/             # nombre, navegación y contador de favoritas
+│   ├── Hero/               # banner con llamadas a la acción y el buscador (children)
+│   ├── MovieSearch/        # entrada controlada con retardo
+│   ├── MovieList/          # filtra por el texto y dibuja el estado vacío
+│   ├── MovieCard/          # tarjeta con el botón de favorita
+│   └── Footer/
+├── hooks/
+│   ├── useDebounce.js      # devuelve el valor cuando deja de cambiar
+│   └── useLocalStorage.js  # useState que se guarda en localStorage
+├── data/                   # cartelera y datos del cine
+└── styles/                 # variables → reset → base → typography → forms → utilities
+```
 
-| Paquete | Tipo | Para qué |
+## Componentes reutilizables
+
+| Componente | Por qué es reutilizable |
+|---|---|
+| `Button` | Recibe su contenido por `children` y su aspecto por `variant` (`primary`, `secondary`, `ghost`) y `size` (`md`, `sm`). Con `href` se dibuja como enlace. El mismo componente se usa para «Ver horarios», «Reservar por teléfono» y el botón de favorita de cada tarjeta, cambiando solo sus props. |
+| `Hero` | Recibe la película por props y cualquier contenido extra por `children`: hoy el buscador, mañana otro bloque, sin tocar el componente. |
+| `MovieSearch` | No sabe qué se filtra: avisa del texto por la función `onSearch` que le pasa el padre. |
+| `useDebounce`, `useLocalStorage` | Hooks propios que sirven para cualquier valor, no solo para películas. |
+
+## Datos que la aplicación recuerda
+
+| Dato | Dónde vive | Por qué ahí |
 |---|---|---|
-| `react` | dependencia | Librería de componentes |
-| `react-dom` | dependencia | Dibuja los componentes en el navegador |
-| `vite` | desarrollo | Servidor de desarrollo y empaquetado |
-| `@vitejs/plugin-react` | desarrollo | Soporte de JSX y recarga rápida en Vite |
-
-## Estructura del proyecto
-
-```
-Lab09EMP/
-├── index.html
-├── package.json
-├── vite.config.js
-├── public/
-│   ├── favicon.svg
-│   └── posters/            # pósters de las 8 películas (SVG)
-└── src/
-    ├── main.jsx            # punto de entrada: monta <App /> en #root
-    ├── App.jsx             # compone la página y reparte los datos
-    ├── components/         # una carpeta por componente (JSX + CSS)
-    │   ├── Header/
-    │   ├── Hero/
-    │   ├── MovieList/
-    │   ├── MovieCard/
-    │   └── Footer/
-    ├── data/
-    │   ├── movies.js       # cartelera: 8 películas
-    │   └── cinema.js       # nombre y datos de contacto del cine
-    └── styles/             # arquitectura de CSS
-        ├── index.css       # importa todo en orden
-        ├── variables.css   # colores, espacios, tipografía
-        ├── reset.css       # normaliza el navegador
-        └── base.css        # estilos globales y .container
-```
-
-## Recorte de la interfaz en componentes
-
-```
-App
-├── Header      (cinemaName)
-├── main
-│   ├── Hero        (movie)           -> película destacada
-│   └── MovieList   (title, movies)
-│       └── MovieCard × 8  (movie)    -> key = movie.id
-└── Footer      (cinemaName, contact)
-```
-
-- **App** es el único componente que importa los archivos de `data/`. Los hijos no saben de dónde vienen los datos: solo reciben lo que necesitan por props.
-- **Header**: nombre del cine y navegación.
-- **Hero**: banner de la película destacada (recibe `movie`).
-- **MovieList**: recorre `movies` con `map` y dibuja una `MovieCard` por película, pasando `key={movie.id}`.
-- **MovieCard**: imagen, título, clasificación, valoración y horarios de una película.
-- **Footer**: datos de contacto e información del cine.
-
-Más detalle (errores provocados, casos de prueba y conclusiones) en [`docs/INFORME.md`](docs/INFORME.md).
+| Películas favoritas (ids) | `App`, con `useLocalStorage` | Las usan el `Header` (contador) y cada `MovieCard` (botón): el estado sube al ancestro común. Se guarda en `localStorage` para que sobreviva a una recarga. |
+| Texto que se escribe en el buscador | `MovieSearch`, con `useState` | Solo el input necesita cada pulsación; es una entrada controlada. |
+| Texto de búsqueda con retardo | `App`, con `useState` | Lo escribe `MovieSearch` y lo lee `MovieList`, que son hermanos: el padre común es `App`. |
+| Lista filtrada | No es estado: `MovieList` la calcula en cada render | Se deriva de la cartelera y del texto; guardarla en estado la duplicaría. |
