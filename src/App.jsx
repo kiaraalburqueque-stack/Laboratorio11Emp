@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useLocalStorage } from './hooks/useLocalStorage'
 import Header from './components/Header/Header'
 import Hero from './components/Hero/Hero'
 import MovieList from './components/MovieList/MovieList'
@@ -7,11 +8,14 @@ import MovieSearch from './components/MovieSearch/MovieSearch'
 import { movies, featuredMovie } from './data/movies'
 import { cinema } from './data/cinema'
 
+const FAVORITES_KEY = 'cine-tecsup:favorites'
+
 // App owns the data that several components share.
 function App() {
   // Ids of the favorite movies. It lives here because the Header (counter)
-  // and every MovieCard (heart button) need the same list.
-  const [favorites, setFavorites] = useState([])
+  // and every MovieCard (heart button) need the same list. It is saved in
+  // localStorage so it survives a reload.
+  const [favorites, setFavorites] = useLocalStorage(FAVORITES_KEY, [])
 
   // Search text reported by MovieSearch (already debounced). It lives in App
   // because MovieSearch writes it and MovieList, a sibling, reads it.
