@@ -1,3 +1,4 @@
+import Button from '../Button/Button'
 import './Hero.css'
 
 // Banner for the featured movie. It only knows the movie it receives by props.
@@ -18,9 +19,7 @@ function Hero({ movie }) {
             {movie.genre} · {movie.duration} min · {movie.rating} · ⭐ {movie.score}
           </p>
           <p className="hero__synopsis">{movie.synopsis}</p>
-          <a href="#billboard" className="hero__button">
-            Ver horarios
-          </a>
+          <Button href="#billboard">Ver horarios</Button>
         </div>
       </div>
     </section>
