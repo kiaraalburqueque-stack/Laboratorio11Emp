@@ -32,3 +32,14 @@
   --header-height: 64px;
   --container-width: 1200px;
 }
+
+/* Tokens for form controls, states and the favorite accent (lab 10). */
+:root {
+  --color-danger: #f43f5e;
+  --color-focus: #60a5fa;
+  --color-input-bg: #11141c;
+  --line-height-body: 1.6;
+  --line-height-tight: 1.15;
+  --input-height: 48px;
+  --transition-fast: 0.15s ease;
+}

@@ -1,0 +1,23 @@
+/* Text styles shared by every component. */
+body {
+  line-height: var(--line-height-body);
+}
+
+h1,
+h2,
+h3 {
+  line-height: var(--line-height-tight);
+  font-weight: 800;
+}
+
+p {
+  max-width: 70ch;
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.text-small {
+  font-size: var(--font-size-sm);
+}
