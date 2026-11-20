@@ -43,3 +43,14 @@
   --input-height: 48px;
   --transition-fast: 0.15s ease;
 }
+
+/* Lab 11: display typography, skeleton and toast tokens. */
+:root {
+  --font-display: 'Segoe UI Black', 'Arial Black', var(--font-family);
+  --font-size-xs-caps: 0.7rem;
+  --letter-spacing-caps: 0.14em;
+  --color-skeleton: #232733;
+  --color-skeleton-shine: #2f3442;
+  --color-success: #34d399;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+}

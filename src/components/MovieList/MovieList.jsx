@@ -20,7 +20,10 @@ function MovieList({ title, movies, query = '', favorites, onToggleFavorite }) {
   return (
     <section className="movie-list container" id="billboard">
       <div className="movie-list__header">
-        <h2 className="movie-list__title">{title}</h2>
+        <div>
+          <span className="eyebrow">Hoy en salas</span>
+          <h2 className="movie-list__title section-title">{title}</h2>
+        </div>
         <p className="movie-list__count text-muted text-small" aria-live="polite">
           {visibleMovies.length} de {movies.length} películas
         </p>
