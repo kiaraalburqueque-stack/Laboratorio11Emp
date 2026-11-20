@@ -5,7 +5,7 @@
 
 | Integrante | Desarrollo realizado |
 |---|---|
-| Kiara Alburqueque | Pasos 1–12 (completar con el reparto real del equipo) |
+| Kiara Alburqueque | Pasos 1–12: creación del proyecto, datos, componentes, composición, errores provocados y entrega (trabajo individual) |
 
 ---
 
