@@ -11,15 +11,9 @@ function MovieSearch({ onSearch, placeholder = 'Busca por título o género' }) 
   const [text, setText] = useState('')
   const debouncedText = useDebounce(text, SEARCH_DELAY_MS)
 
-  function handleChange(event) {
-    const value = event.target.value
-    console.log(`[MovieSearch] keystroke: "${value}"`)
-    setText(value)
-  }
-
   // Runs only when the debounced text changes, not on every key.
+  // The delay comes from the custom hook: no setTimeout written by hand here.
   useEffect(() => {
-    console.log(`[MovieSearch] search sent to App: "${debouncedText}"`)
     onSearch(debouncedText)
   }, [debouncedText, onSearch])
 
@@ -30,7 +24,7 @@ function MovieSearch({ onSearch, placeholder = 'Busca por título o género' }) 
         id="movie-search-input"
         type="search"
         value={text}
-        onChange={handleChange}
+        onChange={(event) => setText(event.target.value)}
         placeholder={placeholder}
         autoComplete="off"
       />
