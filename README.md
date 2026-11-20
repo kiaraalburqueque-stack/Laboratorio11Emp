@@ -1,10 +1,11 @@
-# Laboratorio 10 – Componentes y eventos: Cartelera de cine
+# Laboratorio 11 – Comunicación entre componentes: Cartelera de cine
 
 **Curso:** Desarrollo de Aplicaciones Empresariales (4-C24-A)
 **Docente:** Michael Montgomery Rosell
 **Alumna:** Kiara Alburqueque
+**Rama de trabajo:** `lab11-componentes`
 
-Continuación de la cartelera del laboratorio 9 (React + Vite). En esta semana se agregan un botón reutilizable, películas favoritas con `useState`, un buscador controlado con retardo, el filtrado de la cartelera con estado vacío y el guardado de las favoritas en el navegador.
+Continuación de la cartelera de los laboratorios 9 y 10 (React + Vite). Esta semana se agregan: un adaptador de datos, avisos emergentes con **react-hot-toast**, los hooks propios `useDebounce`, `useWindowSize` y `usePremieres`, un esqueleto de carga, el carrusel de estrenos con sus estados de carga y error, y el botón que limpia el filtro desde el banner.
 
 ## Cómo levantar el proyecto
 
@@ -13,40 +14,33 @@ npm install
 npm run dev
 ```
 
-## Estructura
+## Árbol de componentes y dato que vive en cada nivel
 
 ```
-src/
-├── App.jsx                 # estado compartido: favoritas y texto de búsqueda
-├── components/
-│   ├── Button/             # botón reutilizable (children + variant + size)
-│   ├── Header/             # nombre, navegación y contador de favoritas
-│   ├── Hero/               # banner con llamadas a la acción y el buscador (children)
-│   ├── MovieSearch/        # entrada controlada con retardo
-│   ├── MovieList/          # filtra por el texto y dibuja el estado vacío
-│   ├── MovieCard/          # tarjeta con el botón de favorita
-│   └── Footer/
-├── hooks/
-│   ├── useDebounce.js      # devuelve el valor cuando deja de cambiar
-│   └── useLocalStorage.js  # useState que se guarda en localStorage
-├── data/                   # cartelera y datos del cine
-└── styles/                 # variables → reset → base → typography → forms → utilities
+NotificationProvider            notify()  (contexto: única pieza que conoce react-hot-toast)
+└── App                         favorites (useLocalStorage) · searchText (useState) · query = useDebounce(searchText)
+    ├── Header                  recibe favoritesCount (solo el número)
+    ├── Hero                    recibe movie y, como children, el buscador y el botón
+    │   ├── MovieSearch         recibe value + onChange (no guarda estado)
+    │   └── Button «Limpiar»    llama a setSearchText('')
+    ├── MovieList               recibe movies, query, favorites, onToggleFavorite · usa useWindowSize
+    │   └── MovieCard × N       recibe movie, isFavorite, onToggleFavorite · usa useNotify
+    ├── PremieresSection        simulateError (useState) · usePremieres · useWindowSize
+    │   ├── SkeletonCard × N    (mientras carga)
+    │   └── PremiereCarousel    recibe premieres + visible
+    └── Footer
 ```
 
-## Componentes reutilizables
+## Hooks propios
 
-| Componente | Por qué es reutilizable |
-|---|---|
-| `Button` | Recibe su contenido por `children` y su aspecto por `variant` (`primary`, `secondary`, `ghost`) y `size` (`md`, `sm`). Con `href` se dibuja como enlace. El mismo componente se usa para «Ver horarios», «Reservar por teléfono» y el botón de favorita de cada tarjeta, cambiando solo sus props. |
-| `Hero` | Recibe la película por props y cualquier contenido extra por `children`: hoy el buscador, mañana otro bloque, sin tocar el componente. |
-| `MovieSearch` | No sabe qué se filtra: avisa del texto por la función `onSearch` que le pasa el padre. |
-| `useDebounce`, `useLocalStorage` | Hooks propios que sirven para cualquier valor, no solo para películas. |
-
-## Datos que la aplicación recuerda
-
-| Dato | Dónde vive | Por qué ahí |
+| Hook | Qué lógica extrae | Quién lo usa |
 |---|---|---|
-| Películas favoritas (ids) | `App`, con `useLocalStorage` | Las usan el `Header` (contador) y cada `MovieCard` (botón): el estado sube al ancestro común. Se guarda en `localStorage` para que sobreviva a una recarga. |
-| Texto que se escribe en el buscador | `MovieSearch`, con `useState` | Solo el input necesita cada pulsación; es una entrada controlada. |
-| Texto de búsqueda con retardo | `App`, con `useState` | Lo escribe `MovieSearch` y lo lee `MovieList`, que son hermanos: el padre común es `App`. |
-| Lista filtrada | No es estado: `MovieList` la calcula en cada render | Se deriva de la cartelera y del texto; guardarla en estado la duplicaría. |
+| `useDebounce(value, delay)` | Esperar a que un valor deje de cambiar | `App` (texto de búsqueda) y `useWindowSize` (tamaño de ventana) |
+| `useWindowSize()` | Escuchar `resize`, limpiar el listener y devolver el tamaño con retardo | `MovieList` (tarjetas por fila) y `PremieresSection` (tarjetas visibles en el carrusel) |
+| `usePremieres({ fail })` | Pedir los estrenos y exponer `loading`, `success` o `error`, con `retry` | `PremieresSection` |
+| `useLocalStorage(key, initial)` | `useState` que se guarda en el navegador | `App` (favoritas) |
+| `useNotify()` | Pedir un aviso sin saber cómo se muestra | `MovieCard` |
+
+## ¿Por qué el contador de favoritas no puede vivir en la cabecera?
+
+El contador se calcula a partir de la lista de favoritas, y esa lista la cambian las tarjetas (`MovieCard`), que no son hijas del `Header` sino sus «primas»: las dos cuelgan de `App`. Los datos en React solo bajan por props; un hermano no puede leer ni cambiar el estado de otro. Si la lista o el contador vivieran en el `Header`, las tarjetas no tendrían cómo avisarle. Por eso la lista sube al ancestro común (`App`), que le pasa al `Header` solo el número (`favoritesCount`) y a cada tarjeta solo lo suyo (`isFavorite` y `onToggleFavorite`).
