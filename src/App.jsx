@@ -32,9 +32,12 @@ function App() {
     )
   }
 
+  // Derived from the list: the Header only needs the number, never the list.
+  const favoritesCount = favorites.length
+
   return (
     <>
-      <Header cinemaName={cinema.name} favoritesCount={favorites.length} />
+      <Header cinemaName={cinema.name} favoritesCount={favoritesCount} />
       <main>
         <Hero movie={featuredMovie}>
           <MovieSearch onSearch={setQuery} />
