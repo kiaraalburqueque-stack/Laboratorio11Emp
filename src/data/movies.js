@@ -1,104 +1,108 @@
-// Movie listing data for the cinema billboard.
-// Each movie has: id, title, image, synopsis, rating (age classification),
-// score (0-10), genre, duration (minutes) and showtimes.
-export const movies = [
+// Movies as the cinema API sends them. The components never read this
+// shape directly: everything goes through adaptMovie (src/utils/adaptMovie.js).
+import { adaptMovies } from '../utils/adaptMovie'
+
+export const rawMovies = [
   {
     id: 1,
-    title: 'Órbita Final',
-    image: '/posters/orbita-final.svg',
-    synopsis:
+    original_title: 'Órbita Final',
+    poster_path: '/posters/orbita-final.svg',
+    overview:
       'Una tripulación varada en la estación espacial debe decidir quien regresa a la Tierra cuando solo queda una cápsula de escape.',
-    rating: 'PG-13',
-    score: 8.7,
-    genre: 'Ciencia ficción',
-    duration: 128,
-    showtimes: ['14:00', '17:30', '21:00'],
+    certification: 'PG-13',
+    vote_average: '8.7',
+    genres: [{ id: 1, name: 'Ciencia ficción' }],
+    runtime: '128 min',
+    show_times: ['14:00', '17:30', '21:00'],
   },
   {
     id: 2,
-    title: 'La Casa del Puerto',
-    image: '/posters/la-casa-del-puerto.svg',
-    synopsis:
+    original_title: 'La Casa del Puerto',
+    poster_path: '/posters/la-casa-del-puerto.svg',
+    overview:
       'Una familia hereda una casona en el Callao y descubre que sus antiguos dueños nunca se fueron del todo.',
-    rating: '14',
-    score: 7.4,
-    genre: 'Terror',
-    duration: 102,
-    showtimes: ['16:15', '19:45', '22:30'],
+    certification: '14',
+    vote_average: '7.4',
+    genres: [{ id: 2, name: 'Terror' }],
+    runtime: '102 min',
+    show_times: ['16:15', '19:45', '22:30'],
   },
   {
     id: 3,
-    title: 'Corazón de Barro',
-    image: '/posters/corazon-de-barro.svg',
-    synopsis:
+    original_title: 'Corazón de Barro',
+    poster_path: '/posters/corazon-de-barro.svg',
+    overview:
       'Un alfarero de Chulucanas intenta salvar el taller de su abuelo mientras se enamora de la arquitecta que viene a demolerlo.',
-    rating: 'APT',
-    score: 7.9,
-    genre: 'Romance',
-    duration: 110,
-    showtimes: ['13:30', '16:00', '18:30'],
+    certification: 'APT',
+    vote_average: '7.9',
+    genres: [{ id: 3, name: 'Romance' }],
+    runtime: '110 min',
+    show_times: ['13:30', '16:00', '18:30'],
   },
   {
     id: 4,
-    title: 'Código Rojo',
-    image: '/posters/codigo-rojo.svg',
-    synopsis:
+    original_title: 'Código Rojo',
+    poster_path: '/posters/codigo-rojo.svg',
+    overview:
       'Una analista de ciberseguridad tiene doce horas para detener un ataque que dejará a oscuras a toda la ciudad.',
-    rating: '14',
-    score: 8.1,
-    genre: 'Acción',
-    duration: 118,
-    showtimes: ['15:00', '18:15', '21:45'],
+    certification: '14',
+    vote_average: '8.1',
+    genres: [{ id: 4, name: 'Acción' }],
+    runtime: '118 min',
+    show_times: ['15:00', '18:15', '21:45'],
   },
   {
     id: 5,
-    title: 'El Gran Viaje de Pipo',
-    image: '/posters/el-gran-viaje-de-pipo.svg',
-    synopsis:
+    original_title: 'El Gran Viaje de Pipo',
+    poster_path: '/posters/el-gran-viaje-de-pipo.svg',
+    overview:
       'Un pequeño colibrí que no sabe volar recorre los Andes para reencontrarse con su bandada antes del invierno.',
-    rating: 'APT',
-    score: 8.4,
-    genre: 'Animación',
-    duration: 95,
-    showtimes: ['11:00', '13:15', '15:30'],
+    certification: 'APT',
+    vote_average: '8.4',
+    genres: [{ id: 5, name: 'Animación' }],
+    runtime: '95 min',
+    show_times: ['11:00', '13:15', '15:30'],
   },
   {
     id: 6,
-    title: 'Última Ronda',
-    image: '/posters/ultima-ronda.svg',
-    synopsis:
+    original_title: 'Última Ronda',
+    poster_path: '/posters/ultima-ronda.svg',
+    overview:
       'Un boxeador retirado acepta entrenar a la hija de su antiguo rival para la pelea que él nunca pudo ganar.',
-    rating: 'PG-13',
-    score: 7.6,
-    genre: 'Drama',
-    duration: 124,
-    showtimes: ['17:00', '20:00'],
+    certification: 'PG-13',
+    vote_average: '7.6',
+    genres: [{ id: 6, name: 'Drama' }],
+    runtime: '124 min',
+    show_times: ['17:00', '20:00'],
   },
   {
     id: 7,
-    title: 'Risas en Cuarentena',
-    image: '/posters/risas-en-cuarentena.svg',
-    synopsis:
+    original_title: 'Risas en Cuarentena',
+    poster_path: '/posters/risas-en-cuarentena.svg',
+    overview:
       'Cinco compañeros de departamento quedan encerrados una semana y convierten la convivencia en un caos absoluto.',
-    rating: 'APT',
-    score: 6.9,
-    genre: 'Comedia',
-    duration: 98,
-    showtimes: ['12:45', '15:15', '19:00', '21:30'],
+    certification: 'APT',
+    vote_average: '6.9',
+    genres: [{ id: 7, name: 'Comedia' }],
+    runtime: '98 min',
+    show_times: ['12:45', '15:15', '19:00', '21:30'],
   },
   {
     id: 8,
-    title: 'Sombras de Lima',
-    image: '/posters/sombras-de-lima.svg',
-    synopsis:
+    original_title: 'Sombras de Lima',
+    poster_path: '/posters/sombras-de-lima.svg',
+    overview:
       'Un detective veterano y una periodista novata siguen la pista de un asesino que deja acertijos en el Centro Histórico.',
-    rating: '18',
-    score: 8.3,
-    genre: 'Suspenso',
-    duration: 131,
-    showtimes: ['18:00', '21:15', '23:40'],
+    certification: '18',
+    vote_average: '8.3',
+    genres: [{ id: 8, name: 'Suspenso' }],
+    runtime: '131 min',
+    show_times: ['18:00', '21:15', '23:40'],
   },
 ]
+
+// The model the app uses, produced by the adapter.
+export const movies = adaptMovies(rawMovies)
 
 // The featured movie shown in the Hero banner.
 export const featuredMovie = movies[0]
