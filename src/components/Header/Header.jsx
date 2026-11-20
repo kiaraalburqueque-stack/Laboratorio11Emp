@@ -2,7 +2,7 @@ import './Header.css'
 
 const NAV_LINKS = [
   { label: 'Cartelera', href: '#billboard' },
-  { label: 'Estrenos', href: '#featured' },
+  { label: 'Estrenos', href: '#premieres' },
   { label: 'Contacto', href: '#contact' },
 ]
 

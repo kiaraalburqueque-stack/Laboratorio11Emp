@@ -5,6 +5,7 @@ import Hero from './components/Hero/Hero'
 import MovieList from './components/MovieList/MovieList'
 import Footer from './components/Footer/Footer'
 import MovieSearch from './components/MovieSearch/MovieSearch'
+import PremieresSection from './components/PremieresSection/PremieresSection'
 import { movies, featuredMovie } from './data/movies'
 import { cinema } from './data/cinema'
 
@@ -45,6 +46,7 @@ function App() {
           favorites={favorites}
           onToggleFavorite={toggleFavorite}
         />
+        <PremieresSection />
       </main>
       <Footer cinemaName={cinema.name} contact={cinema.contact} />
     </>
