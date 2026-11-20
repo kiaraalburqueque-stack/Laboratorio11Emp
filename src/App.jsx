@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useDebounce } from './hooks/useDebounce'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import Header from './components/Header/Header'
 import Hero from './components/Hero/Hero'
 import MovieList from './components/MovieList/MovieList'
 import Footer from './components/Footer/Footer'
+import Button from './components/Button/Button'
 import MovieSearch from './components/MovieSearch/MovieSearch'
 import PremieresSection from './components/PremieresSection/PremieresSection'
 import { movies, featuredMovie } from './data/movies'
@@ -18,9 +20,12 @@ function App() {
   // localStorage so it survives a reload.
   const [favorites, setFavorites] = useLocalStorage(FAVORITES_KEY, [])
 
-  // Search text reported by MovieSearch (already debounced). It lives in App
-  // because MovieSearch writes it and MovieList, a sibling, reads it.
-  const [query, setQuery] = useState('')
+  // Text of the search box. It lives in App, the closest common ancestor of
+  // the three components that use it: MovieSearch (writes it), the clear
+  // button in the banner (empties it) and MovieList (filters with it).
+  const [searchText, setSearchText] = useState('')
+  // MovieList filters with the debounced text, not on every key.
+  const query = useDebounce(searchText, 400)
 
   // Adds the movie if it is not in the list, removes it if it is.
   // It builds a new array instead of changing the old one.
@@ -40,7 +45,16 @@ function App() {
       <Header cinemaName={cinema.name} favoritesCount={favoritesCount} />
       <main>
         <Hero movie={featuredMovie}>
-          <MovieSearch onSearch={setQuery} />
+          <MovieSearch value={searchText} onChange={setSearchText} />
+          <Button
+            variant="ghost"
+            size="sm"
+            className="mt-2"
+            disabled={searchText === ''}
+            onClick={() => setSearchText('')}
+          >
+            ✕ Limpiar filtro
+          </Button>
         </Hero>
         <MovieList
           title="En cartelera"
