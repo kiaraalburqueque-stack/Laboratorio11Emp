@@ -27,7 +27,12 @@ function App() {
       <Header cinemaName={cinema.name} favoritesCount={favorites.length} />
       <main>
         <Hero movie={featuredMovie} />
-        <MovieList title="En cartelera" movies={movies} />
+        <MovieList
+          title="En cartelera"
+          movies={movies}
+          favorites={favorites}
+          onToggleFavorite={toggleFavorite}
+        />
       </main>
       <Footer cinemaName={cinema.name} contact={cinema.contact} />
     </>

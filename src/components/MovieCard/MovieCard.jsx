@@ -1,9 +1,11 @@
+import Button from '../Button/Button'
 import './MovieCard.css'
 
 // Card for a single movie. It receives the movie by props and does not
-// know where the data comes from.
-function MovieCard({ movie }) {
-  const { title, image, rating, score, genre, duration, showtimes } = movie
+// know where the data comes from. To mark a favorite it does not change
+// any state: it calls the function it received and App decides.
+function MovieCard({ movie, isFavorite, onToggleFavorite }) {
+  const { id, title, image, rating, score, genre, duration, showtimes } = movie
 
   return (
     <article className="movie-card">
@@ -26,6 +28,16 @@ function MovieCard({ movie }) {
             </li>
           ))}
         </ul>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          className="movie-card__favorite"
+          aria-pressed={isFavorite}
+          onClick={() => onToggleFavorite(id)}
+        >
+          {isFavorite ? '♥ En favoritas' : '♡ Añadir a favoritas'}
+        </Button>
       </div>
     </article>
   )
