@@ -1,4 +1,6 @@
 import MovieCard from '../MovieCard/MovieCard'
+import { useWindowSize } from '../../hooks/useWindowSize'
+import { columnsForWidth } from '../../utils/columnsForWidth'
 import './MovieList.css'
 
 // Lowercase and without accents, so "codigo" finds "Código".
@@ -11,6 +13,8 @@ function normalize(text) {
 // empty state when nothing matches. It does not own the favorites: it
 // receives the list and the function from App and passes them down.
 function MovieList({ title, movies, query = '', favorites, onToggleFavorite }) {
+  const { width } = useWindowSize()
+  const columns = columnsForWidth(width)
   const search = normalize(query)
   // Derived data: computed on each render from props, so it is not state.
   const visibleMovies = search
@@ -25,7 +29,7 @@ function MovieList({ title, movies, query = '', favorites, onToggleFavorite }) {
           <h2 className="movie-list__title section-title">{title}</h2>
         </div>
         <p className="movie-list__count text-muted text-small" aria-live="polite">
-          {visibleMovies.length} de {movies.length} películas
+          {visibleMovies.length} de {movies.length} películas · {columns} por fila
         </p>
       </div>
 
@@ -36,7 +40,7 @@ function MovieList({ title, movies, query = '', favorites, onToggleFavorite }) {
           <p className="text-muted">Prueba con otro título o con un género, por ejemplo «drama» o «terror».</p>
         </div>
       ) : (
-        <div className="movie-list__grid">
+        <div className="movie-list__grid" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
           {visibleMovies.map((movie) => (
             <MovieCard
               key={movie.id}
